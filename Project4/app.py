@@ -1,15 +1,16 @@
-from flask import Flask, Request
-
+from flask import Flask, Request, render_template
 
 app = Flask(__name__)
 
-# Write an app that shows values from the App object on one page and the Request object on another
+@app.route("/")
+def home():
+    return render_template('home.html')
+
 @app.route("/app")
 def app_obj():
-    return str(app.__dict__)
-    # return dir(app)
+    return render_template('app.html', obj_name="App Object", info=dir(app))
 
 @app.route("/request")
 def req_obj():
-    return str(Request.__dict__)
-    # return dir(Request)
+    return render_template('app.html', obj_name="Request Object", info=dir(Request))
+
