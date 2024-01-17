@@ -1,0 +1,16 @@
+{%extends "base.html" %} 
+{%block content%} 
+
+<h1>{{ prime_factors }}</h1>
+
+<form method="post" action="{{ url_for('find_prime_factors') }}">
+    <label for="number">Enter a number:</label>
+    <input type="number" name="number" required>
+    <button type="submit">Find Prime Factors</button>
+</form>
+
+{% if factors %}
+    <p>The prime factors are: {{ factors }}</p>
+{% endif %}
+
+{% endblock %}

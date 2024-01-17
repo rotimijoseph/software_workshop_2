@@ -1,0 +1,22 @@
+<!DOCTYPE html> 
+<html lang="en"> 
+<head> 
+    <title> Learning Template Inheritance</title> 
+</head> 
+<body> 
+    <h1> A Very Simple Application </h1>
+    <nav>
+        <ul>
+            <li> <a href="{{ url_for ('homepage')}}">Home</a> </li>
+            <li> <a href="{{ url_for ('app_obj')}}">App</a> </li>
+            <li> <a href="{{ url_for ('req_obj')}}">Request</a> </li>
+            <li> <a href="{{ url_for ('timestamp')}}">Timestamp</a> </li>
+            <li> <a href="{{ url_for ('quotes')}}">Quote of the Day</a> </li>
+            <li> <a href="{{ url_for('find_prime_factors') }}">Find Prime Factors</a> </li>
+
+        </ul>
+    </nav>
+        {% block content %} 
+        {% endblock %} 
+</body> 
+</html>
