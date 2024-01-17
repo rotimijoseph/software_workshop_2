@@ -5,6 +5,13 @@
 </head> 
 <body> 
     <h1> A Very Simple Application </h1>
+    <nav>
+        <ul>
+            <li> <a href="{{ url_for ('home')}}">Home</a> </li>
+            <li> <a href="{{ url_for ('app_obj')}}">App</a> </li>
+            <li> <a href="{{ url_for ('req_obj')}}">Request</a> </li>
+        </ul>
+    </nav>
         {% block content %} 
         {% endblock %} 
   
