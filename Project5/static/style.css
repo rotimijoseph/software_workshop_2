@@ -41,3 +41,26 @@ nav li a:hover {
     margin: 0;
     padding: 9px;
 }
+
+button {
+    display: inline-block;
+    padding: 5px 13px;
+    font-size: 12px;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    outline: none;
+    color: black;
+    background-color: white;
+    border: solid;
+    border-radius: 10px;
+    /* box-shadow: 0 5px #999; */
+  }
+  
+  button:hover {background-color: #3e8e41}
+  
+  button:active {
+    background-color: #3e8e41;
+    box-shadow: 0 5px #666;
+    transform: translateY(4px);
+  }
