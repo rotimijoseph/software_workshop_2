@@ -16,7 +16,15 @@
         </ul>
     </nav>
     <h1 class="text-center"> A Very Simple Application </h1>
-        {% block content %} 
-        {% endblock %} 
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for message in messages %}
+                <div>{{ mesage }}</div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    {% block content %} 
+    {% endblock %} 
 </body> 
 </html>
