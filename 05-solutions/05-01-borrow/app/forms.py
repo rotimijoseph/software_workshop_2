@@ -1,7 +1,8 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, PasswordField, DateField, TextAreaField, DecimalField
-from wtforms.validators import DataRequired, Length, EqualTo, ValidationError
+from wtforms.validators import DataRequired, Length, EqualTo, Email, ValidationError
 from datetime import datetime, timedelta
+from app.models import Student, Loan
 
 class RegistrationForm(FlaskForm): 
 	username = StringField('Username', validators=[DataRequired(), Length(min=2, max=20)])
@@ -23,8 +24,29 @@ class RegistrationForm(FlaskForm):
           if self.dob.data > min_age_date or self.dob.data < max_birth_date or self.dob.data > today:
             return False
           return True
+    
+class AddStudentForm(FlaskForm):
+    username = StringField('Username', validators=[DataRequired()])
+    firstname = StringField('Firstname')
+    lastname = StringField('Lastname', validators=[DataRequired()])
+    email = StringField('Email', validators=[DataRequired(), Email()])
+    submit = SubmitField('Add Student')
 
+    def validate_username(self, username):
+        if Student.query.filter_by(username=username.data).first():
+            raise ValidationError('This username is already taken. Please choose another')
+
+    def validate_email(self, email):
+        if Student.query.filter_by(email=email.data).first():
+            raise ValidationError('This email address is already registered. Please choose another')
+        
 class BorrowForm(FlaskForm):
     student_id = StringField('Student ID', validators=[DataRequired()])
     device_id = StringField('Device ID', validators=[DataRequired()])
     submit = SubmitField('Borrow')
+    
+    def validate_loan(self, student_id):
+        existing_loan = Loan.query.filter_by(student_id=student_id.data, returndatetime=None).first()
+        if existing_loan:
+            raise ValidationError('You already have a device on loan. Please return it before borrowing another device.')
+            

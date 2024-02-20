@@ -18,4 +18,4 @@ from app.models import *
 
 @app.shell_context_processor
 def make_shell_context():
-    return dict(app=app, db=db, Student=Student, Loan=Loan, datetime=datetime)
+    return dict(app=app, db=db, Student=Student, Loan=Loan)
