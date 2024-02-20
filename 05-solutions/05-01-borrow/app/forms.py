@@ -24,4 +24,7 @@ class RegistrationForm(FlaskForm):
             return False
           return True
 
-	
+class BorrowForm(FlaskForm):
+    student_id = StringField('Student ID', validators=[DataRequired()])
+    device_id = StringField('Device ID', validators=[DataRequired()])
+    submit = SubmitField('Borrow')

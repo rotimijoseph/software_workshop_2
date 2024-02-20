@@ -13,6 +13,7 @@
         <ul class="navbar-nav">
             <li class="nav-item active"><a class="nav-link" href="{{ url_for ('index')}}">Home</a></li>
             <li class="nav-item active"><a class="nav-link" href="{{ url_for ('register')}}">Register</a></li>
+            <li class="nav-item active"><a class="nav-link" href="{{ url_for ('borrow')}}">Borrow</a></li>
         </ul>
     </nav>
     <main class="container">
@@ -26,7 +27,7 @@
         {% endif %}
     {% endwith %}
 
-    <h1 class="text-center"> A Very Simple Application </h1>
+    <h1 class="text-center"> Databases </h1>
 
     {% block content %} 
     {% endblock %} 
