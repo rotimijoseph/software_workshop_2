@@ -44,9 +44,20 @@ def add_student():
 def borrow():
     form = BorrowForm()
     if form.validate_on_submit():
+        # check if student has already taken out a loan
         existing_loan = Loan.query.filter_by(student_id=form.student_id.data, returndatetime=None).first()
         if existing_loan:
-            flash('You already have a device on loan. Please return it before borrowing another device.')
+            flash('You already have a device on loan. Please return it before borrowing another device.') # flash shows at top of page
+            
+        # check if student is registered 
+        elif not Student.query.filter(Student.student_id == form.student_id.data).first():
+            form.student_id.errors.append("Student is not registered.") # with this append method it shows next to the form
+            
+        # check if item is already being loaned 
+        elif Loan.query.filter(Loan.device_id == form.device_id.data).first():
+            form.device_id.errors.append("Device is already out for loan.")
+        
+        # if everything is okay then new loan added to database 
         else:
             new_loan = Loan(student_id=form.student_id.data, device_id=form.device_id.data, borrowdatetime=datetime.now())   
             db.session.add(new_loan)
