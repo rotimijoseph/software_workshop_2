@@ -11,7 +11,6 @@
     <nav class="navbar navbar-expand-lg navbar-light bg-light mb-3">
         <ul class="navbar-nav me-auto">
             <li class="nav-item active"><a class="nav-link" href="{{ url_for ('index')}}">Home</a></li>
-            <li class="nav-item active"><a class="nav-link" href="{{ url_for ('register')}}">Register</a></li>
             <li class="nav-item active"><a class="nav-link" href="{{ url_for ('borrow')}}">Borrow</a></li>
             <li class="nav-item active"><a class="nav-link" href="{{ url_for ('return_loan')}}">Return</a></li>
             <li class="nav-item active"><a class="nav-link" href="{{ url_for ('add_student')}}">Add Student</a></li>
@@ -19,6 +18,7 @@
             <li class="nav-item active"><a class="nav-link" href="{{ url_for ('reports')}}">Reports</a></li>
         </ul>
         <ul class="navbar-nav ms-auto"> <!-- ms auto moves item to far right, while me auto keeps it on the left -->
+            <li class="nav-item active"><a class="nav-link" href="{{ url_for ('register')}}">Register</a></li>
             <li class="nav-item active"><a class="nav-link" href="{{ url_for ('login')}}">Login</a></li>
         </ul>
     </nav>
