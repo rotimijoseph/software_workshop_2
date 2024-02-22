@@ -1,8 +1,10 @@
 from flask import render_template, redirect, url_for, flash, request
 from app import app, db
-from app.forms import RegistrationForm, BorrowForm, AddStudentForm, ReturnForm, LoginForm
+from app.forms import RegistrationForm, BorrowForm, AddStudentForm, ReturnForm, LoginForm, RemoveStudentForm
 from app.models import Student, Loan
 from datetime import datetime
+from sqlalchemy.exc import IntegrityError
+from sqlalchemy import update
 
 @app.route("/")
 def index():
@@ -99,3 +101,29 @@ def return_loan():
             db.session.rollback()
             
     return render_template("return_loan.html", form=form)
+
+
+@app.route('/remove_student', methods=['GET', 'POST', 'DELETE'])
+def remove_student():
+    form = RemoveStudentForm()
+    if form.validate_on_submit():
+        username = form.username.data
+        email = form.email.data
+        student = Student.query.filter_by(username=username, email=email).first()
+        if student:
+            try:
+                # Delete associated loan records
+                Loan.query.filter_by(student_id=student.student_id).delete() # have to delete loans before deleting student 
+                # Delete the student
+                db.session.delete(student)
+                db.session.commit()
+                flash(f'Student {student.username} deleted successfully', 'success')
+                return redirect(url_for('index'))
+            except IntegrityError as e:
+                db.session.rollback()
+                print("Error occurred during deletion:", str(e))
+                flash('An error occurred while deleting the student', 'error')
+        else:
+            flash('Student not found', 'error')
+
+    return render_template('remove_student.html', title='Remove Student', form=form)

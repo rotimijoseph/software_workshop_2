@@ -59,3 +59,9 @@ class ReturnForm(FlaskForm):
     device_id = StringField('Device ID', validators=[DataRequired()])
     submit = SubmitField('Return Device')
     
+class RemoveStudentForm(FlaskForm):
+    username = StringField('Student Username', validators=[DataRequired()])
+    email = StringField('Student Email', validators=[DataRequired(), Email()])
+    submit = SubmitField('Confirm Deletion')
+    
+    
