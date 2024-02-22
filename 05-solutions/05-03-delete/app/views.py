@@ -4,7 +4,6 @@ from app.forms import RegistrationForm, BorrowForm, AddStudentForm, ReturnForm, 
 from app.models import Student, Loan
 from datetime import datetime
 from sqlalchemy.exc import IntegrityError
-from sqlalchemy import update
 
 @app.route("/")
 def index():
@@ -107,14 +106,14 @@ def return_loan():
 def remove_student():
     form = RemoveStudentForm()
     if form.validate_on_submit():
-        username = form.username.data
-        email = form.email.data
+        username = form.username.data.strip() # remove any trailing white space that may be entered when creating the username 
+        email = form.email.data.strip()
         student = Student.query.filter_by(username=username, email=email).first()
-        if student:
+        if student and form.admin_key.data == "sillybilly":
             try:
-                # Delete associated loan records
+                # delete associated loan records first
                 Loan.query.filter_by(student_id=student.student_id).delete() # have to delete loans before deleting student 
-                # Delete the student
+                # then delete the student
                 db.session.delete(student)
                 db.session.commit()
                 flash(f'Student {student.username} deleted successfully', 'success')
@@ -123,7 +122,9 @@ def remove_student():
                 db.session.rollback()
                 print("Error occurred during deletion:", str(e))
                 flash('An error occurred while deleting the student', 'error')
+        elif not student:
+            flash(f'Student not found.', 'danger')
         else:
-            flash('Student not found', 'error')
+            flash(f'Incorrect admin key.', 'warning')
 
     return render_template('remove_student.html', title='Remove Student', form=form)

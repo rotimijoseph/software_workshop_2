@@ -62,6 +62,7 @@ class ReturnForm(FlaskForm):
 class RemoveStudentForm(FlaskForm):
     username = StringField('Student Username', validators=[DataRequired()])
     email = StringField('Student Email', validators=[DataRequired(), Email()])
+    admin_key = StringField('Admin Key', validators=[DataRequired()])
     submit = SubmitField('Confirm Deletion')
     
     
