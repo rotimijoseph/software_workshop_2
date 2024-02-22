@@ -5,30 +5,43 @@
 
 <form method="POST" action="{{ url_for('reports') }}" novalidate>
     {{ form.hidden_tag() }}
-    <div>
+    <div class="mb-3">
         {{ form.student_id.label }}<br/>{{ form.student_id(size=30) }}<br/>
         {% for error in form.student_id.errors %}
             <span style="color: red;">[{{ error }}]</span>
         {% endfor %}
     </div>
-    <div>
+    <div class="mb-3">
         {{ form.device_id.label }}<br/>{{ form.device_id(size=30) }}<br/>
         {% for error in form.device_id.errors %}
             <span style="color: red;">[{{ error }}]</span>
         {% endfor %}
     </div>
-    <div>{{ form.submit() }}</div>
+    <div class="mb-3">{{ form.submit() }}</div>
 </form>
+
 
 {% if form.is_submitted() %}
     {% if device_data %}
-        <!-- Iterate over device_data only if it is not None -->
         <h3>Device Information</h3>
-        <ul>
-            <li>Device ID: {{ device_data.device_id }}</li>
-            <li>Borrowed Date: {{ device_data.borrowdatetime }}</li>
-            <li>Returned Date: {{ device_data.returndatetime }}</li>
-        </ul>
+        <div class="table-responsive">
+            <table class="table table-condensed">
+                <thead>
+                    <tr>
+                        <th>Device ID</th>
+                        <th>Borrowed Date</th>
+                        <th>Returned Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>{{ device_data.device_id }}</td>
+                        <td>{{ device_data.borrowdatetime }}</td>
+                        <td>{{ device_data.returndatetime }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     {% else %}
         <p>No device information found for the specified device ID.</p>
     {% endif %}
@@ -36,13 +49,25 @@
 
 {% if form.is_submitted() %}
     {% if student_data %}
-        <!-- Iterate over student_data only if it is not None -->
         <h3>Student Loan Information</h3>
-        <ul>
-            <li>Student ID: {{ student_data.student_id }}</li>
-            <li>Borrowed Date: {{ student_data.borrowdatetime }}</li>
-            <li>Returned Date: {{ student_data.returndatetime }}</li>
-        </ul>
+        <div class="table-responsive">
+            <table class="table table-condensed">
+                <thead>
+                    <tr>
+                        <th>Student ID</th>
+                        <th>Borrowed Date</th>
+                        <th>Returned Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>{{ student_data.student_id }}</td>
+                        <td>{{ student_data.borrowdatetime }}</td>
+                        <td>{{ student_data.returndatetime }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     {% else %}
         <p>No device information found for the specified student ID.</p>
     {% endif %}

@@ -39,7 +39,7 @@ def add_student():
         db.session.add(new_student)
         try:
             db.session.commit()
-            flash(f'New Student added: {form.username.data} received', 'success')
+            flash(f'New Student, {form.username.data} ({form.email.data}) successfully added.', 'success')
             return redirect(url_for('index'))
         except:
             db.session.rollback()
