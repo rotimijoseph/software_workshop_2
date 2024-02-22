@@ -64,5 +64,9 @@ class RemoveStudentForm(FlaskForm):
     email = StringField('Student Email', validators=[DataRequired(), Email()])
     admin_key = StringField('Admin Key', validators=[DataRequired()])
     submit = SubmitField('Confirm Deletion')
-    
+
+class ReportForm(FlaskForm):
+    student_id = StringField('Student ID')
+    device_id = StringField('Device ID')
+    submit = SubmitField('Get Loan Information')
     

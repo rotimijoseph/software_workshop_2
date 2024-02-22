@@ -1,6 +1,6 @@
 from flask import render_template, redirect, url_for, flash, request
 from app import app, db
-from app.forms import RegistrationForm, BorrowForm, AddStudentForm, ReturnForm, LoginForm, RemoveStudentForm
+from app.forms import RegistrationForm, BorrowForm, AddStudentForm, ReturnForm, LoginForm, RemoveStudentForm, ReportForm
 from app.models import Student, Loan
 from datetime import datetime
 from sqlalchemy.exc import IntegrityError
@@ -105,6 +105,7 @@ def return_loan():
 @app.route('/remove_student', methods=['GET', 'POST', 'DELETE'])
 def remove_student():
     form = RemoveStudentForm()
+    
     if form.validate_on_submit():
         username = form.username.data.strip() # remove any trailing white space that may be entered when creating the username 
         email = form.email.data.strip()
@@ -128,3 +129,16 @@ def remove_student():
             flash(f'Incorrect admin key.', 'warning')
 
     return render_template('remove_student.html', title='Remove Student', form=form)
+
+@app.route('/reports', methods=['GET', 'POST'])
+def reports():
+    form = ReportForm()
+    device = None 
+    student = None
+    
+    if form.validate_on_submit():
+        student = Student.query.filter_by(student_id=form.student_id.data).first()
+        device = Loan.query.filter_by(device_id=form.device_id.data).first()
+        
+        
+    return render_template('reports.html', title="Reports", form=form, device_data=device, student_data=student)
