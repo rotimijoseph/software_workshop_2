@@ -1,6 +1,6 @@
-from flask import render_template, redirect, url_for, flash
+from flask import render_template, redirect, url_for, flash, request
 from app import app, db
-from app.forms import RegistrationForm, BorrowForm, AddStudentForm
+from app.forms import RegistrationForm, BorrowForm, AddStudentForm, ReturnForm
 from app.models import Student, Loan
 from datetime import datetime
 
@@ -63,10 +63,31 @@ def borrow():
             db.session.add(new_loan)
             try:
                 db.session.commit()
-                flash(f'You have succesfully loaned this device.')
+                flash('You have succesfully loaned this device.', 'success') # success is the alert catergory not part of the string 
                 return redirect(url_for('index'))
             except:
                 db.session.rollback()
                 if Loan.query.filter_by(student_id=form.student_id.data, returndatetime=None).first():
-                    form.student_id.errors.append('You already have a device on loan. Please return it before borrowing another device.')
+                    form.student_id.errors.append('You already have a device on loan. Please return it before borrowing another device.', 'warning')
     return render_template("borrow.html", form=form)
+
+@app.route("/return_loan", methods=['GET', 'POST'])
+def return_loan():
+    form = ReturnForm()
+    if form.validate_on_submit():
+        # check to see if student id has device attached to it 
+        try:
+            # query for the loan record that matches student and device id 
+            existing_loan = Loan.query.filter_by(student_id=form.student_id.data, device_id=form.device_id.data, returndatetime=None).first()
+            
+            if existing_loan:
+                existing_loan.returndatetime = datetime.now()
+                db.session.commit()
+                flash(f'Device: {form.device_id.data} successfully returned', 'success')
+                return redirect(url_for('index'))
+            else:
+                flash(f'No matching loan record found for the provided student ID and device ID.')
+        except:
+            db.session.rollback()
+            
+    return render_template("return_loan.html", form=form)

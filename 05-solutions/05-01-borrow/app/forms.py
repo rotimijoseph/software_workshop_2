@@ -45,8 +45,13 @@ class BorrowForm(FlaskForm):
     device_id = StringField('Device ID', validators=[DataRequired()])
     submit = SubmitField('Borrow')
     
-    def validate_loan(self, student_id):
+    def validate_loan(self, student_id): # see what happens if this is removed, message won't flash at the top? 
         existing_loan = Loan.query.filter_by(student_id=student_id.data, returndatetime=None).first()
         if existing_loan:
             raise ValidationError('You already have a device on loan. Please return it before borrowing another device.')
-            
+
+class ReturnForm(FlaskForm):
+    student_id = StringField('Student ID', validators=[DataRequired()])
+    device_id = StringField('Device ID', validators=[DataRequired()])
+    submit = SubmitField('Return Device')
+    
